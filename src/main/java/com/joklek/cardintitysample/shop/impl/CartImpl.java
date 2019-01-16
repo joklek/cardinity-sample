@@ -12,7 +12,7 @@ public class CartImpl implements Cart {
 
     @Autowired
     private ProductRepo repository;
-    
+
     private final Map<Product, Integer> productsAndCounts;
 
     public CartImpl() {
