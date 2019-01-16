@@ -23,6 +23,8 @@ public class ShopDriver {
     @Value("${cardinity.consumer_secret}")
     private String secret;
 
+    @Value("${store.callback_url}")
+    private String callbackURL;
 
     public void run() {
         Cart cart = new CartImpl(UUID.randomUUID());
@@ -49,7 +51,7 @@ public class ShopDriver {
         return card;
     }
 
-    public void makePayment(CardInfo cardInfo, BigDecimal price, UUID cartId) {
+    public Result<Payment> makePayment(CardInfo cardInfo, BigDecimal price, UUID cartId) {
         // Move to field?
         CardinityClient client = new CardinityClient(key, secret);
         Payment payment = new Payment();
@@ -62,35 +64,10 @@ public class ShopDriver {
         Card card = convertCard(cardInfo);
         payment.setPaymentInstrument(card);
 
-        Result<Payment> result = client.createPayment(payment);
+        return client.createPayment(payment);
+    }
 
-        /** Request was valid and payment was approved. */
-        if (result.isValid() && result.getItem().getStatus() == Payment.Status.APPROVED) {
-            UUID paymentId = result.getItem().getId();
-            // proceed with successful payment flow
-        }
-
-        /** Request was valid but payment requires additional authentication. */
-        else if (result.isValid() && result.getItem().getStatus() == Payment.Status.PENDING) {
-            UUID paymentId = result.getItem().getId();
-            String acsURL = result.getItem().getAuthorizationInformation().getUrl();
-            String paReq = result.getItem().getAuthorizationInformation().getData();
-            // redirect customer to ACS server for 3D Secure authentication
-        }
-
-        /** Request was valid but payment was declined. */
-        else if (result.isValid()) {
-            String declineReason = result.getItem().getError();
-            // proceed with declined payment flow
-        }
-
-        /** Request was invalid.
-         *   Possible reasons: wrong credentials, unsupported currency, suspended account, etc.
-         */
-        else {
-            CardinityError error = result.getCardinityError();
-            // log error details for debugging
-            // proceed with error handling flow
-        }
+    public String getCallbackURL() {
+        return callbackURL;
     }
 }
