@@ -1,3 +1,6 @@
+# Configuration files are here
+src/main/resources/application.properties
+
 
 # Created by https://www.gitignore.io/api/java,maven,intellij+all
 # Edit at https://www.gitignore.io/?templates=java,maven,intellij+all
