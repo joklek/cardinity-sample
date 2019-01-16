@@ -64,6 +64,6 @@ public class CartWindow extends AbstractWindow {
     }
 
     private void pay(Cart cart) {
-        switchWindow("PayWindow", Collections.singletonMap("cartId", cart.getId()));
+        switchWindow("payWindow", Collections.singletonMap("cart", cart));
     }
 }

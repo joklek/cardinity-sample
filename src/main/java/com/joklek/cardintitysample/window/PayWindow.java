@@ -107,8 +107,8 @@ public class PayWindow extends AbstractWindow {
 
     private void enterExpiryYear(CardInfoImpl.Builder cardBuilder) {
         System.out.println("Enter the expiry year of your card");
-        Integer expiryMonth = readNumber();
-        cardBuilder.withExpiryMonth(expiryMonth);
+        Integer expiryYear = readNumber();
+        cardBuilder.withExpiryYear(expiryYear);
 
         System.out.println("Enter 'n' to return to the payment menu, or anything else to continue");
         String input = readInput();
@@ -129,6 +129,6 @@ public class PayWindow extends AbstractWindow {
         arguments.put("card", card);
         arguments.put("price", price);
         arguments.put("cartId", cartId);
-        switchWindow("ProcessingWindow", arguments);
+        switchWindow("processingWindow", arguments);
     }
 }

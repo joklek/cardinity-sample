@@ -67,11 +67,7 @@ public class ProductWindow extends AbstractWindow {
     }
 
     private void addProduct(List<Product> tasks, Cart cart) {
-        System.out.println("Enter the id of product to remove: ");
-        String input = readInput();
-        if(input.isEmpty()) {
-            return;
-        }
+        System.out.println("Enter the id of product to add: ");
         Product product = getValidProduct(tasks);
         if(product != null) {
             cart.addProduct(product);
@@ -79,7 +75,7 @@ public class ProductWindow extends AbstractWindow {
     }
 
     private void openCart(Cart cart) {
-        switchWindow("CartWindow", Collections.singletonMap("cart", cart));
+        switchWindow("cartWindow", Collections.singletonMap("cart", cart));
     }
 
     private Product getValidProduct(List<Product> products){

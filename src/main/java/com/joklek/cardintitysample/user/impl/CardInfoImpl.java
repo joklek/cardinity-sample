@@ -41,11 +41,11 @@ public class CardInfoImpl implements CardInfo {
     }
 
     public static class Builder {
-        private Optional<String> pan;
-        private Optional<Integer> cvc;
-        private Optional<Integer> expiryYear;
-        private Optional<Integer> expiryMonth;
-        private Optional<String> holder;
+        private Optional<String> pan = Optional.empty();
+        private Optional<Integer> cvc = Optional.empty();
+        private Optional<Integer> expiryYear = Optional.empty();
+        private Optional<Integer> expiryMonth = Optional.empty();
+        private Optional<String> holder = Optional.empty();
 
         public Builder withCardHolder(String holder) {
             this.holder = Optional.of(holder);

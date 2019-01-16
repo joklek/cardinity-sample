@@ -18,7 +18,7 @@ public class ProductRepoImpl implements ProductRepo {
         for(int i = 0; i < 20; i++) {
             UUID newId= UUID.randomUUID();
             String title = RandomStringUtils.random(10, true, false);
-            products.put(newId, new ProductImpl(newId, title, BigDecimal.valueOf(rand.nextFloat())));
+            products.put(newId, new ProductImpl(newId, title, BigDecimal.valueOf(rand.nextFloat()*100)));
         }
     }
 

@@ -30,12 +30,16 @@ public abstract class AbstractWindow {
     }
 
     protected int readNumber() {
-        return scanner.nextInt();
+        int number = scanner.nextInt();
+        scanner.nextLine();
+        return number;
     }
 
     protected String readInput(){
-        scanner.nextLine();
-        return scanner.nextLine();
+        //scanner.nextLine();
+        String input = scanner.nextLine();
+        //scanner.nextLine();
+        return input;
     }
 }
 

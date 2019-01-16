@@ -38,7 +38,7 @@ public class CartImpl implements Cart {
             productsAndCounts.put(product, oldCount + 1);
         }
         else {
-            productsAndCounts.put(product, 0);
+            productsAndCounts.put(product, 1);
         }
     }
 
