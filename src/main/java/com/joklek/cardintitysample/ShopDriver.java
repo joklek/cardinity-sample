@@ -5,6 +5,11 @@ import com.cardinity.model.Card;
 import com.cardinity.model.CardinityError;
 import com.cardinity.model.Payment;
 import com.cardinity.model.Result;
+import com.joklek.cardintitysample.shop.Cart;
+import com.joklek.cardintitysample.shop.impl.CartImpl;
+import com.joklek.cardintitysample.shop.impl.ProductImpl;
+import com.joklek.cardintitysample.user.CardInfo;
+import com.joklek.cardintitysample.user.impl.CardInfoImpl;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
@@ -19,19 +24,27 @@ public class ShopDriver {
     private String secret;
 
     public void run() {
+        // Move to field?
         CardinityClient client = new CardinityClient(key, secret);
 
+        Cart cart = new CartImpl();
+        cart.addProduct(new ProductImpl(UUID.randomUUID(), "Test", BigDecimal.TEN));
+
+        CardInfo cardInfo = new CardInfoImpl.Builder()
+                .withCardHolder("James Bond")
+                .withPan("4111111111111111")
+                .withCvc(129)
+                .withExpiryYear(2200)
+                .withExpiryMonth(11)
+                .build();
+
         Payment payment = new Payment();
-        payment.setAmount(new BigDecimal(10));
         payment.setCurrency("EUR");
         payment.setCountry("LT");
         payment.setPaymentMethod(Payment.Method.CARD);
-        Card card = new Card();
-        card.setPan("4111111111111111");
-        card.setCvc(123);
-        card.setExpYear(2021);
-        card.setExpMonth(1);
-        card.setHolder("John Doe");
+
+        payment.setAmount(cart.getTotalPrice());
+        Card card = convertCard(cardInfo);
         payment.setPaymentInstrument(card);
 
         Result<Payment> result = client.createPayment(payment);
@@ -64,5 +77,15 @@ public class ShopDriver {
             // log error details for debugging
             // proceed with error handling flow
         }
+    }
+
+    private Card convertCard(CardInfo cardInfo) {
+        Card card = new Card();
+        card.setHolder(cardInfo.getHolder());
+        card.setPan(cardInfo.getPan());
+        card.setCvc(cardInfo.getCvc());
+        card.setExpYear(cardInfo.getExpiryYear());
+        card.setExpMonth(cardInfo.getExpiryMonth());
+        return card;
     }
 }

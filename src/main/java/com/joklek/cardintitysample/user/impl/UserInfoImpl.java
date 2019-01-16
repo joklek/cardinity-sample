@@ -20,7 +20,7 @@ public class UserInfoImpl implements UserInfo {
         return lastName;
     }
 
-    private static class Builder {
+    public static class Builder {
         Optional<String> firstName;
         Optional<String> lastName;
 

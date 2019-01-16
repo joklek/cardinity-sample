@@ -40,7 +40,7 @@ public class CardInfoImpl implements CardInfo {
         return holder;
     }
 
-    private static class Builder {
+    public static class Builder {
         private Optional<String> pan;
         private Optional<Integer> cvc;
         private Optional<Integer> expiryYear;
