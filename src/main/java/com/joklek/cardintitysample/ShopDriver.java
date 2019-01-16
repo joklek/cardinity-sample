@@ -2,7 +2,6 @@ package com.joklek.cardintitysample;
 
 import com.cardinity.CardinityClient;
 import com.cardinity.model.Card;
-import com.cardinity.model.CardinityError;
 import com.cardinity.model.Payment;
 import com.cardinity.model.Result;
 import com.joklek.cardintitysample.shop.Cart;
@@ -10,6 +9,7 @@ import com.joklek.cardintitysample.shop.impl.CartImpl;
 import com.joklek.cardintitysample.shop.impl.ProductImpl;
 import com.joklek.cardintitysample.user.CardInfo;
 import com.joklek.cardintitysample.user.impl.CardInfoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
@@ -17,11 +17,8 @@ import java.util.UUID;
 
 public class ShopDriver {
 
-    @Value("${cardinity.consumer_key}")
-    private String key;
-
-    @Value("${cardinity.consumer_secret}")
-    private String secret;
+    @Autowired
+    CardinityClient client;
 
     @Value("${store.callback_url}")
     private String callbackURL;
@@ -52,8 +49,6 @@ public class ShopDriver {
     }
 
     public Result<Payment> makePayment(CardInfo cardInfo, BigDecimal price, UUID cartId) {
-        // Move to field?
-        CardinityClient client = new CardinityClient(key, secret);
         Payment payment = new Payment();
         payment.setCurrency("EUR");
         payment.setCountry("LT");
@@ -65,6 +60,10 @@ public class ShopDriver {
         payment.setPaymentInstrument(card);
 
         return client.createPayment(payment);
+    }
+
+    public Result<Payment> finalizePayment(UUID paymentId, String authorizeData) {
+        return client.finalizePayment(paymentId, authorizeData);
     }
 
     public String getCallbackURL() {
