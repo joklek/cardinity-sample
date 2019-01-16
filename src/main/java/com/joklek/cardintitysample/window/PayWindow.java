@@ -12,9 +12,12 @@ public class PayWindow extends AbstractWindow {
 
     private final Map<Integer, String> options;
 
+    private final Map<String, String> cardInfo;
+
     public PayWindow() {
         super();
         this.options = new HashMap<>();
+        this.cardInfo = new HashMap<>();
         options.put(1, "Add card holders name");
         options.put(2, "Add PAN number");
         options.put(3, "Add CVC number");
@@ -33,7 +36,15 @@ public class PayWindow extends AbstractWindow {
     public void render(Map<String, Object> args) {
         Cart cart = (Cart) args.get("cart");
         CardInfoImpl.Builder cardBuilder = new CardInfoImpl.Builder();
+        cardInfo.clear();
         while(true) {
+            if(!cardInfo.isEmpty()) {
+                System.out.println("***" + "UserInfo" + "***");
+                for (Map.Entry<String, String> currentInfo : cardInfo.entrySet()) {
+                    System.out.println(String.format("%s : %s", currentInfo.getKey(), currentInfo.getValue()));
+                }
+            }
+
             System.out.println("***" + getTitle() + "***");
             for (Map.Entry<Integer, String> option : options.entrySet()) {
                 System.out.printf("%d. %s%n", option.getKey(), option.getValue());
@@ -68,8 +79,10 @@ public class PayWindow extends AbstractWindow {
 
     private void enterHolderName(CardInfoImpl.Builder cardBuilder) {
         System.out.println("Enter the cardholders first and last names");
-        String pan = readInput();
-        cardBuilder.withCardHolder(pan);
+        String cardHolderName = readInput();
+        cardBuilder.withCardHolder(cardHolderName);
+
+        cardInfo.put("Card Holder Name", cardHolderName);
 
         System.out.println("Enter 'n' to return to the payment menu, or anything else to continue");
         String input = readInput();
@@ -84,6 +97,8 @@ public class PayWindow extends AbstractWindow {
         String pan = readInput();
         cardBuilder.withPan(pan);
 
+        cardInfo.put("pan", pan);
+
         System.out.println("Enter 'n' to return to the payment menu, or anything else to continue");
         String input = readInput();
         if(input.trim().equals("n")) {
@@ -96,6 +111,8 @@ public class PayWindow extends AbstractWindow {
         System.out.println("Enter the CVC of your card");
         Integer cvc = readNumber();
         cardBuilder.withCvc(cvc);
+
+        cardInfo.put("cvc", cvc.toString());
 
         System.out.println("Enter 'n' to return to the payment menu, or anything else to continue");
         String input = readInput();
@@ -110,6 +127,8 @@ public class PayWindow extends AbstractWindow {
         Integer expiryYear = readNumber();
         cardBuilder.withExpiryYear(expiryYear);
 
+        cardInfo.put("Expiry Year", expiryYear.toString());
+
         System.out.println("Enter 'n' to return to the payment menu, or anything else to continue");
         String input = readInput();
         if(input.trim().equals("n")) {
@@ -122,6 +141,8 @@ public class PayWindow extends AbstractWindow {
         System.out.println("Enter the expiry month of your card");
         Integer expiryMonth = readNumber();
         cardBuilder.withExpiryMonth(expiryMonth);
+
+        cardInfo.put("Expiry Month", expiryMonth.toString());
     }
 
     private void process(CardInfo card, BigDecimal price, UUID cartId) {
