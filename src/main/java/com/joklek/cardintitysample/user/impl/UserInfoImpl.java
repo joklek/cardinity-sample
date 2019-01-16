@@ -37,7 +37,7 @@ public class UserInfoImpl implements UserInfo {
         public UserInfoImpl build() {
             UserInfoImpl userInfo = new UserInfoImpl();
             userInfo.firstName = firstName.orElseThrow(IllegalStateException::new); // TODO make exceptions make sense
-            userInfo.lastName = firstName.orElseThrow(IllegalStateException::new);
+            userInfo.lastName = lastName.orElseThrow(IllegalStateException::new);
             return userInfo;
         }
     }
