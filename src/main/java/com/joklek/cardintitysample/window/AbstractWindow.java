@@ -29,7 +29,7 @@ public abstract class AbstractWindow {
         }
     }
 
-    protected int readChoice() {
+    protected int readNumber() {
         return scanner.nextInt();
     }
 

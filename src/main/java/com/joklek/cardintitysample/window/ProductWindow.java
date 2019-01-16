@@ -6,10 +6,7 @@ import com.joklek.cardintitysample.shop.Product;
 import com.joklek.cardintitysample.shop.impl.CartImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("squid:S106")
 public class ProductWindow extends AbstractWindow {
@@ -29,12 +26,12 @@ public class ProductWindow extends AbstractWindow {
 
     @Override
     public String getTitle() {
-        return "Tasks";
+        return "Shop window";
     }
 
     @Override
     public void render(Map<String, Object> args) {
-        Cart cart = new CartImpl();
+        Cart cart = new CartImpl(UUID.randomUUID()); // TODO get from user
         while(true) {
             System.out.println("***" + getTitle() + "***");
             List<Product> products = productRepo.getProducts();
@@ -53,7 +50,7 @@ public class ProductWindow extends AbstractWindow {
             for (Map.Entry<Integer, String> option : options.entrySet()) {
                 System.out.printf("%d. %s%n", option.getKey(), option.getValue());
             }
-            int choice = readChoice();
+            int choice = readNumber();
             switch(choice) {
                 case 1:
                     addProduct(products, cart);
@@ -82,11 +79,11 @@ public class ProductWindow extends AbstractWindow {
     }
 
     private void openCart(Cart cart) {
-        switchWindow("TaskView", Collections.singletonMap("taskId", cart));
+        switchWindow("CartWindow", Collections.singletonMap("cart", cart));
     }
 
     private Product getValidProduct(List<Product> products){
-        int choice = readChoice();
+        int choice = readNumber();
         if(choice < 0 || choice >= products.size()) {
             System.out.println("Incorrect id entered");
             return null;

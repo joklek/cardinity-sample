@@ -23,11 +23,9 @@ public class ShopDriver {
     @Value("${cardinity.consumer_secret}")
     private String secret;
 
-    public void run() {
-        // Move to field?
-        CardinityClient client = new CardinityClient(key, secret);
 
-        Cart cart = new CartImpl();
+    public void run() {
+        Cart cart = new CartImpl(UUID.randomUUID());
         cart.addProduct(new ProductImpl(UUID.randomUUID(), "Test", BigDecimal.TEN));
 
         CardInfo cardInfo = new CardInfoImpl.Builder()
@@ -38,12 +36,29 @@ public class ShopDriver {
                 .withExpiryMonth(11)
                 .build();
 
+        makePayment(cardInfo, cart.getTotalPrice(), cart.getId());
+    }
+
+    private Card convertCard(CardInfo cardInfo) {
+        Card card = new Card();
+        card.setHolder(cardInfo.getHolder());
+        card.setPan(cardInfo.getPan());
+        card.setCvc(cardInfo.getCvc());
+        card.setExpYear(cardInfo.getExpiryYear());
+        card.setExpMonth(cardInfo.getExpiryMonth());
+        return card;
+    }
+
+    public void makePayment(CardInfo cardInfo, BigDecimal price, UUID cartId) {
+        // Move to field?
+        CardinityClient client = new CardinityClient(key, secret);
         Payment payment = new Payment();
         payment.setCurrency("EUR");
         payment.setCountry("LT");
         payment.setPaymentMethod(Payment.Method.CARD);
 
-        payment.setAmount(cart.getTotalPrice());
+        payment.setAmount(price);
+        payment.setDescription(cartId.toString());
         Card card = convertCard(cardInfo);
         payment.setPaymentInstrument(card);
 
@@ -77,15 +92,5 @@ public class ShopDriver {
             // log error details for debugging
             // proceed with error handling flow
         }
-    }
-
-    private Card convertCard(CardInfo cardInfo) {
-        Card card = new Card();
-        card.setHolder(cardInfo.getHolder());
-        card.setPan(cardInfo.getPan());
-        card.setCvc(cardInfo.getCvc());
-        card.setExpYear(cardInfo.getExpiryYear());
-        card.setExpMonth(cardInfo.getExpiryMonth());
-        return card;
     }
 }

@@ -14,14 +14,21 @@ public class CartImpl implements Cart {
     private ProductRepo repository;
 
     private final Map<Product, Integer> productsAndCounts;
+    private final UUID id;
 
-    public CartImpl() {
+    public CartImpl(UUID id) {
+        this.id = id;
         productsAndCounts = new HashMap<>();
     }
 
     @Override
-    public List<Product> getProducts() {
-        return new ArrayList<>(productsAndCounts.keySet());
+    public UUID getId() {
+        return id;
+    }
+
+    @Override
+    public Map<Product, Integer> getProductsAndAmounts() {
+        return productsAndCounts;
     }
 
     @Override
@@ -53,6 +60,13 @@ public class CartImpl implements Cart {
     @Override
     public void clearCart() {
         productsAndCounts.clear();
+    }
+
+    @Override
+    public int getTotalItems() {
+        return productsAndCounts.values().stream()
+                .mapToInt(x -> x)
+                .sum();
     }
 
     @Override
