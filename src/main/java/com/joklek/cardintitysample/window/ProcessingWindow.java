@@ -3,7 +3,7 @@ package com.joklek.cardintitysample.window;
 import com.cardinity.model.CardinityError;
 import com.cardinity.model.Payment;
 import com.cardinity.model.Result;
-import com.joklek.cardintitysample.ShopDriver;
+import com.joklek.cardintitysample.payments.ShopDriver;
 import com.joklek.cardintitysample.user.CardInfo;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

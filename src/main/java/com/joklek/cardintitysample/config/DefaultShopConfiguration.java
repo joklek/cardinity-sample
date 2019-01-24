@@ -1,7 +1,8 @@
 package com.joklek.cardintitysample.config;
 
 import com.cardinity.CardinityClient;
-import com.joklek.cardintitysample.ShopDriver;
+import com.joklek.cardintitysample.payments.DefaultShopDriver;
+import com.joklek.cardintitysample.payments.ShopDriver;
 import com.joklek.cardintitysample.repo.ProductRepo;
 import com.joklek.cardintitysample.repo.impl.ProductRepoImpl;
 import com.joklek.cardintitysample.window.CartWindow;
@@ -23,7 +24,7 @@ public class DefaultShopConfiguration {
 
     @Bean
     public ShopDriver driver() {
-        return new ShopDriver();
+        return new DefaultShopDriver();
     }
 
     @Bean

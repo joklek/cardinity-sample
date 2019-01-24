@@ -1,42 +1,23 @@
-package com.joklek.cardintitysample;
+package com.joklek.cardintitysample.payments;
 
 import com.cardinity.CardinityClient;
 import com.cardinity.model.Card;
 import com.cardinity.model.Payment;
 import com.cardinity.model.Result;
-import com.joklek.cardintitysample.shop.Cart;
-import com.joklek.cardintitysample.shop.impl.CartImpl;
-import com.joklek.cardintitysample.shop.impl.ProductImpl;
 import com.joklek.cardintitysample.user.CardInfo;
-import com.joklek.cardintitysample.user.impl.CardInfoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class ShopDriver {
+public class DefaultShopDriver implements ShopDriver {
 
     @Autowired
     CardinityClient client;
 
-    @Value("${store.callback_url}")
+    @Value("${store.callback_url:http://undefined.null}")
     private String callbackURL;
-
-    public void run() {
-        Cart cart = new CartImpl(UUID.randomUUID());
-        cart.addProduct(new ProductImpl(UUID.randomUUID(), "Test", BigDecimal.TEN));
-
-        CardInfo cardInfo = new CardInfoImpl.Builder()
-                .withCardHolder("James Bond")
-                .withPan("4111111111111111")
-                .withCvc(129)
-                .withExpiryYear(2200)
-                .withExpiryMonth(11)
-                .build();
-
-        makePayment(cardInfo, cart.getTotalPrice(), cart.getId());
-    }
 
     private Card convertCard(CardInfo cardInfo) {
         Card card = new Card();

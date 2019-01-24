@@ -21,7 +21,7 @@ public class ProductWindow extends AbstractWindow {
         this.options = new HashMap<>();
         options.put(1, "Add Product");
         options.put(2, "Open Cart");
-        options.put(3, "Back");
+        options.put(3, "Exit");
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ProductWindow extends AbstractWindow {
                     break;
                 case 2:
                     openCart(cart);
-                    return;
+                    break;
                 case 3:
                     return;
                 default:
